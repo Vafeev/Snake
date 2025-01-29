@@ -66,6 +66,18 @@ Java_com_example_snake_MainActivity_stringFromJNI(
                 client.body.push_back(client.body.back());
                 generateFood();
             }
+
+            int main() {
+                // Генерация начальной еды
+                generateFood();
+
+                // Основной игровой цикл
+                while (true) {
+                    updateGame();
+                    // Отправка обновленного состояния клиентам
+                    // ...
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                }
         }
         clients_mutex.unlock();
     }
