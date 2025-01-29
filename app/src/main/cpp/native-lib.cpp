@@ -35,5 +35,39 @@ Java_com_example_snake_MainActivity_stringFromJNI(
     void generateFood() {
         food = std::make_pair(dis(gen), dis2(gen));
     }
+    // Функция для обновления состояния игры
+    void updateGame() {
+        // Обновление позиций змеек
+        clients_mutex.lock();
+        for (auto& client : clients) {
+            // Движение змейки
+            int newX = client.body[0].first;
+            int newY = client.body[0].second;
+            switch (client.direction) {
+            case 0: newY--; break;
+            case 1: newX++; break;
+            case 2: newY++; break;
+            case 3: newX--; break;
+            }
+            client.body.insert(client.body.begin(), std::make_pair(newX, newY));
+            client.body.pop_back();
+
+            // Проверка на столкновение
+            for (size_t i = 1; i < client.body.size(); i++) {
+                if (client.body[0] == client.body[i]) {
+                    // Змейка врезалась в себя, игра окончена
+                    clients.erase(clients.begin() + (&client - &clients[0]));
+                    break;
+                }
+            }
+
+            // Проверка на сбор еды
+            if (client.body[0] == food) {
+                client.body.push_back(client.body.back());
+                generateFood();
+            }
+        }
+        clients_mutex.unlock();
+    }
 
 }
