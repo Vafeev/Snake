@@ -21,4 +21,19 @@ Java_com_example_snake_MainActivity_stringFromJNI(
     }
     // Еда
     std::pair<int, int> food;
+// Клиенты
+    std::vector<Snake> clients;
+    std::mutex clients_mutex;
+
+// Генератор случайных чисел
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, FIELD_WIDTH - 1);
+    std::uniform_int_distribution<> dis2(0, FIELD_HEIGHT - 1);
+
+// Функция для генерации новой еды
+    void generateFood() {
+        food = std::make_pair(dis(gen), dis2(gen));
+    }
+
 }
