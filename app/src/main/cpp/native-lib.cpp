@@ -66,6 +66,7 @@ Java_com_example_snake_MainActivity_stringFromJNI(
                 client.body.push_back(client.body.back());
                 generateFood();
             }
+            clients_mutex.unlock();
 
             int main() {
                 // Генерация начальной еды
@@ -79,7 +80,7 @@ Java_com_example_snake_MainActivity_stringFromJNI(
                     std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 }
         }
-        clients_mutex.unlock();
+            return 0;
     }
 
 }
